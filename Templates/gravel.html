@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat con API Groq</title>
+  <style>
+    body {
+      background-image: url('/static/images/gravel_roads.jpg'); /* si usas Flask */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    #questionInput {
+      width: 60%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    #submitButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #responseOutput {
+      max-width: 80%;
+      font-size: 18px;
+      background: rgba(0, 0, 0, 0.6); /* fondo oscuro semitransparente */
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      white-space: normal;
+      text-align: left;
+      color: white;
+    }
+
+    .bike { display: flex; justify-content: center; align-items: center; margin-top: 30px; }
+
+    ul {
+      text-align: left;
+      padding-left: 30px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    strong {
+      color: #ffd700; /* dorado para resaltar dentro del fondo oscuro */
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <h2>Haz tu pregunta sobre componentes gravel 🚴🏼‍♂️</h2>
+
+  <input type="text" id="questionInput" placeholder="Escribe tu pregunta aquí">
+  <button id="submitButton">Enviar</button>
+
+  <div id="responseOutput">Aquí aparecerá la respuesta...</div>
+
+  <div class="bike">
+    <img src="/static/images/s-swords.jpg" alt="bicicleta gravel">
+  </div>
+
+  <script>
+    const button = document.getElementById("submitButton");
+
+    button.addEventListener("click", async () => {
+      const pregunta = document.getElementById("questionInput").value;
+      const responseArea = document.getElementById("responseOutput");
+
+      if (!pregunta.trim()) {
+        responseArea.innerHTML = "<p style='color:red;'>❗ Escribe una pregunta primero.</p>";
+        return;
+      }
+
+      responseArea.innerHTML = "<p><em>Consultando la API...</em></p>";
+
+      try {
+        const res = await fetch(`/prompt/${encodeURIComponent(pregunta)}`);
+        const data = await res.json();
+        responseArea.innerHTML = marked.parse(data.respuesta);
+      } catch (err) {
+        responseArea.innerHTML = `<p style='color:red;'>Error: ${err}</p>`;
+      }
+    });
+  </script>
+
+</body>
+</html>
