@@ -45,7 +45,8 @@ pip install -r requirements.txt
 GROQ_API_KEY=TU_CLAVE_GROQ
 python app.py
 CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
-CREATE TABLE Prompts (
+
+2- Creación de la tabla en la base de datos : CREATE TABLE Prompts (
   id SERIAL PRIMARY KEY,
   Prompt_entrada TEXT,
   Prompt_salida TEXT
