@@ -5,7 +5,7 @@
   <title>Chat con API Groq</title>
   <style>
     body {
-      background-image: url('/static/images/gravel_roads.jpg'); /* si usas Flask */
+      background-image: url("{{ url_for('static', filename='images/gravel_roads.jpg') }}");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
@@ -34,7 +34,7 @@
     #responseOutput {
       max-width: 80%;
       font-size: 18px;
-      background: rgba(0, 0, 0, 0.6); /* fondo oscuro semitransparente */
+      background: rgba(0, 0, 0, 0.6);
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
@@ -43,7 +43,12 @@
       color: white;
     }
 
-    .bike { display: flex; justify-content: center; align-items: center; margin-top: 30px; }
+    .bike {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+    }
 
     ul {
       text-align: left;
@@ -55,7 +60,7 @@
     }
 
     strong {
-      color: #ffd700; /* dorado para resaltar dentro del fondo oscuro */
+      color: #ffd700;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -70,7 +75,7 @@
   <div id="responseOutput">Aquí aparecerá la respuesta...</div>
 
   <div class="bike">
-    <img src="/static/images/s-swords.jpg" alt="bicicleta gravel">
+    <img src="{{ url_for('static', filename='images/s-swords.jpg') }}" alt="bicicleta gravel">
   </div>
 
   <script>
