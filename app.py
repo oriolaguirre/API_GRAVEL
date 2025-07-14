@@ -28,6 +28,25 @@ def conection(pregunta, respuesta):
     except Exception as e:
         print("🔴 Error al insertar datos:", e)
 
+@app.route("/historial", methods=['GET'])
+def historial():
+    try:
+        conn = psycopg2.connect(
+            dbname="postgres",
+            user="postgres",
+            password="Stanleykubrick1",
+            host="bbdd-prueba.cj6g4qiykkef.eu-north-1.rds.amazonaws.com",
+            port="5432"
+        )
+        with conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT Prompt_entrada, Prompt_salida FROM Prompts ORDER BY id_number DESC")
+                rows = cursor.fetchall()
+        print("🟢 Carga hecha correctamente.")
+        return jsonify({"historial": rows})
+    except Exception as e:
+        print("🔴 Error al cargar:", e)
+        return jsonify({"error": str(e)})
 
 
 def modelo(pregunta):
@@ -61,5 +80,5 @@ def prompt(preg):
     conection(preg, respuesta)
     return jsonify({"respuesta": respuesta})
 
-#if __name__ == "__main__":
-   #app.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+   app.run(host="0.0.0.0", port=5000)

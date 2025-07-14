@@ -71,13 +71,14 @@
 
   <input type="text" id="questionInput" placeholder="Escribe tu pregunta aquí">
   <button id="submitButton">Enviar</button>
-
+  
   <div id="responseOutput">Aquí aparecerá la respuesta...</div>
 
   <div class="bike">
     <img src="{{ url_for('static', filename='images/s-swords.jpg') }}" alt="bicicleta gravel">
   </div>
-
+    <button id="historialButton">Cargar Historial</button>
+  <button id="ocultarButton">Ocultar Historial</button>
   <script>
     const button = document.getElementById("submitButton");
 
@@ -101,6 +102,42 @@
       }
     });
   </script>
+  <script>
+  const historialBtn = document.getElementById("historialButton");
+
+  historialBtn.addEventListener("click", async () => {
+    const responseArea = document.getElementById("responseOutput");
+    responseArea.innerHTML = "<p><em>Cargando historial...</em></p>";
+
+    try {
+      const res = await fetch("/historial");
+      const data = await res.json();
+
+      if (data.historial && data.historial.length > 0) {
+        let html = "<ul>";
+        data.historial.forEach(([entrada, salida]) => {
+          html += `<li><strong>${entrada}:</strong> ${salida}</li>`;
+        });
+        html += "</ul>";
+        responseArea.innerHTML = html;
+      } else {
+        responseArea.innerHTML = "<p>No hay datos en el historial.</p>";
+      }
+
+    } catch (err) {
+      responseArea.innerHTML = `<p style='color:red;'>Error al cargar: ${err}</p>`;
+    }
+  });
+</script>
+<script>
+  const ocultarBtn = document.getElementById("ocultarButton");
+
+  ocultarBtn.addEventListener("click", () => {
+    const responseArea = document.getElementById("responseOutput");
+    responseArea.innerHTML = "<p>Historial oculto.</p>";
+  });
+</script>
+
 
 </body>
 </html>
